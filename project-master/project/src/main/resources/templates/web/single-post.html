@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layouts/web-layout :: main-fragment(~{:: title}, ~{:: #css}, ~{:: #main}, ~{:: #js})}">
+
+<head>
+    <title>Foodeiblog | Article</title>
+    <th:block id="css">
+        <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+    </th:block>
+</head>
+
+<body>
+   <th:block id="main">
+       <!-- Single Post Section Begin -->
+       <section class="single-post spad">
+           <div class="single-post__hero set-bg"
+                th:styleappend="|background-image:url(${blog.thumbnail})|"></div>
+           <div class="container">
+               <div class="row d-flex justify-content-center">
+                   <div class="col-lg-8">
+                       <div class="single-post__title">
+                           <div class="single-post__title__meta">
+                               <h2 th:text="${blog.publishedAt.getDayOfMonth()}">08</h2>
+                               <span th:text="${#strings.substring(blog.publishedAt.getMonth(),0,3)}">Aug</span>
+                           </div>
+                           <div class="single-post__title__text">
+                               <ul class="label">
+                                   <li th:each="categoryBlog : ${blog.categories}" th:utext="${categoryBlog.name}"></li>
+                               </ul>
+                               <h4 th:text="${blog.title}">Weight loss diet: Ditching this one food can help you slim down fast - what is it?</h4>
+                               <ul class="widget">
+                                   <li>by <span th:text="${blog.user.name}"></span></li>
+                                   <li>3 min read</li>
+                                   <li><span th:text="${blog.comments.size()}"></span> Comment</li>
+                               </ul>
+                           </div>
+                       </div>
+                       <div class="single-post__social__item">
+                           <ul>
+                               <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                               <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                               <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                               <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
+                           </ul>
+                       </div>
+                       <div class="single-post__top__text">
+                           <p th:text="${blog.description}">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                               labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                               laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure Lorem ipsum dolor sit amet,
+                               consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                               aliqua accusantium doloremque laudantium. </p>
+                       </div>
+                       <div class="single-post__recipe__details">
+                           <div class="single-post__recipe__details__option">
+                               <ul>
+                                   <li>
+                                       <h5><i class="fa fa-user-o"></i> SERVES</h5>
+                                       <span>2 as a main, 4 as a side</span>
+                                   </li>
+                                   <li>
+                                       <h5><i class="fa fa-clock-o"></i> PREP TIME</h5>
+                                       <span>15 minute</span>
+                                   </li>
+                                   <li>
+                                       <h5><i class="fa fa-clock-o"></i> Cook TIME</h5>
+                                       <span>15 minute</span>
+                                   </li>
+                                   <li><a href="#" class="primary-btn"><i class="fa fa-print"></i> Read more</a></li>
+                               </ul>
+                           </div>
+                           <div class="single-post__recipe__details__indegradients">
+                               <h5>Ingredients</h5>
+                               <ul>
+                                   <li>Ingredients</li>
+                                   <li>1 cup (240 ml) water, plus more as needed</li>
+                                   <li>1 teaspoon fine sea salt</li>
+                                   <li>2 tablespoons olive oil</li>
+                                   <li>3/4 cup (120 g) fine polenta</li>
+                                   <li>3 cups sunflower oil, plus more as needed</li>
+                                   <li>7 ounces (200 g) peeled parsnips, very thinly sliced on a mandoline</li>
+                                   <li>1 pinch fine sea salt, plus more to taste</li>
+                                   <li>2 tablespoons (30 g) unsalted butter</li>
+                                   <li>1/2 tablespoon maple syrup (up to 1 tablespoon as needed)</li>
+                               </ul>
+                           </div>
+                           <div class="single-post__recipe__details__direction">
+                               <h5>Directions</h5>
+                               <ul>
+                                   <li><span>1.</span> Combine all of the ingredients, kneading to form a smooth dough.
+                                   </li>
+                                   <li><span>2.</span> Allow the dough to rise, in a lightly greased, covered bowl, until
+                                       it’s doubled in size, about 90 minutes.</li>
+                                   <li><span>3.</span> Gently divide the dough in half; it’ll deflate somewhat.</li>
+                                   <li><span>4.</span> Gently shape the dough into two oval loaves; or, for longer loaves,
+                                       two 10″ to 11″ logs. Place the loaves on a lightly greased or parchment-lined baking
+                                       sheet. Cover and let rise until very puffy, about 1 hour. Towards the</li>
+                                   <li><span>5.</span> end of the rising time, preheat the oven to 425°F.</li>
+                                   <li><span>6.</span> Spray the loaves with lukewarm water.</li>
+                                   <li><span>7.</span> Make two fairly deep diagonal slashes in each; a serrated bread
+                                       knife, wielded firmly, works well here.</li>
+                                   <li><span>8.</span> Bake the bread for 25 to 30 minutes, until it’s a very deep golden
+                                       brown. Remove it from the oven, and cool on a rack.</li>
+                               </ul>
+                           </div>
+                       </div>
+                       <div class="single-post__middle__text">
+                           <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                               commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                               dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in. .
+                               Sed ut perspiciatis unde omnis iste natus error sit voluptatem.</p>
+                       </div>
+                       <div class="single-post__quote">
+                           <p>The whole family of tiny legumes, whether red, green, yellow, or black, offers so many
+                               possibilities to create an exciting lunch.</p>
+                           <span>MEIKE PETERS</span>
+                       </div>
+                       <div class="single-post__desc">
+                           <p th:text="${blog.content}">laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure Lorem ipsum dolor sit amet,
+                               consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                               aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                               ex ea commodo consequat.</p>
+                       </div>
+
+                       <div class="single-post__tags">
+                           <ul>
+                               <li th:each="categoryBlog : ${blog.categories}">
+                                   <a th:href="@{/category/{name} (name = ${categoryBlog.name})}" th:utext="${categoryBlog.name}"></a>
+                               </li>
+                           </ul>
+                       </div>
+
+                       <div class="single-post__author__profile">
+                           <div class="single-post__author__profile__pic">
+                               <img th:src="${blog.user.avatar}" alt="">
+                           </div>
+                           <div class="single-post__author__profile__text">
+                               <h4 th:text="${blog.user.name}">Lena Mollein.</h4>
+                               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                   incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                   exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                               <div class="single-post__author__profile__social">
+                                   <a href="#"><i class="fa fa-facebook"></i></a>
+                                   <a href="#"><i class="fa fa-twitter"></i></a>
+                                   <a href="#"><i class="fa fa-google-plus"></i></a>
+                                   <a href="#"><i class="fa fa-instagram"></i></a>
+                                   <a href="#"><i class="fa fa-youtube-play"></i></a>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="single-post__comment">
+                           <div class="widget__title">
+                               <h4><span th:text="${blog.comments.size()}"></span> Comment</h4>
+                           </div>
+                           <div class="single-post__comment__item" th:each="comment : ${comments}">
+                               <div class="single-post__comment__item__pic">
+                                   <img th:src="${comment.user.avatar}" alt="">
+                               </div>
+                               <div class="single-post__comment__item__text">
+                                   <h5 th:text="${comment.user.name}">Brandon Kelley</h5>
+                                   <span th:text="${#temporals.format(comment.updatedAt,'dd/MM/yyyy')}">15 Aug 2017</span>
+                                   <p id="comment-content" th:text="${comment.content}"></p>
+                                   <div th:id="${comment.id}" class="d-none">
+                                           <textarea class="form-control mb-1"
+                                                     style="max-height: 300px; resize: none"
+                                                     th:text="${comment.content}"></textarea>
+                                           <button class="btn btn-info"
+                                                   style="background-color: #f4952f; border-color: #f4952f"
+                                                   th:attr="onclick=|editComment('${comment.id}')|">Edit</button>
+                                           <button class="btn btn-secondary" th:attr="onclick=|hideEditComment('${comment.id}')|">Cancel</button>
+                                   </div>
+                                       <ul sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getEmail().equals(comment.user.email)}">
+                                           <li><a href="javascript:void(0)"
+                                                  th:attr="onclick=|showComment('${comment.id}')|"><i class="fa fa-pencil"></i></a></li>
+                                           <li><a onclick="return confirm('Are you sure to delete?')"
+                                                  th:href="@{/comment/delete/{id} (id = ${comment.id})}"><i class="fa fa-trash"></i></a></li>
+                                       </ul>
+                               </div>
+                           </div>
+
+                       </div>
+                       <div class="single-post__leave__comment">
+                           <div class="widget__title">
+                               <h4>Leave a comment</h4>
+                           </div>
+                           <form th:action="@{/post-comment/{id} (id = ${blog.id})}" th:object="${newCommentRequest}" method="post">
+                               <textarea th:field="*{content}" sec:authorize="isAuthenticated()" placeholder="Leave your comment here."></textarea>
+                               <div sec:authorize="not isAuthenticated()"><p style="color: red">
+                                   **Please <a th:href="@{/login}">login</a> to comment.
+                               </p></div>
+                               <textarea sec:authorize="not isAuthenticated()" placeholder="Leave your comment here." readonly></textarea>
+                               <button sec:authorize="isAuthenticated()" type="submit" class="site-btn">Submit</button>
+                           </form>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </section>
+       <!-- Single Post Section End -->
+   </th:block>
+
+    <th:block id="js">
+        <<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script th:inline="javascript">
+
+                function showComment(id) {
+                const commentForm = document.getElementById(id);
+                commentForm.classList.remove("d-none");
+                commentForm.previousElementSibling.classList.add("d-none");
+            }
+
+            function hideEditComment(id){
+                const commentForm = document.getElementById(id);
+                commentForm.classList.add("d-none");
+                commentForm.previousElementSibling.classList.remove("d-none");
+            }
+
+           async function editComment(id){
+                const commentForm = document.getElementById(id);
+                const commentInput = commentForm.querySelector("textarea");
+                const commentContent = commentForm.previousElementSibling;
+                try {
+                    let res = await axios.post("http://localhost:8080/edit-comment/" + [[${blog.id}]], {
+                        id: id,
+                        content: commentInput.value
+                    });
+                    commentContent.innerHTML = commentInput.value;
+                    hideEditComment(id);
+
+                } catch (e){
+                    console.log(e);
+                }
+
+            }
+
+
+        </script>
+
+    </th:block>
+</body>
+
+</html>

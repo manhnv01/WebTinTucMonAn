@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Document</title>
+</head>
+<body>
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:fragment="dashboard-sidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/dashboard}">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">Foodei Blog</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active" sec:authorize="hasRole('ADMIN')">
+        <a class="nav-link" th:href="@{/dashboard}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider" sec:authorize="hasRole('ADMIN')">
+
+    <!-- Heading -->
+    <div class="sidebar-heading" sec:authorize="hasAnyRole('ADMIN','EDITOR')">
+        Blogs
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','EDITOR')">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#blogs"
+           aria-expanded="true" aria-controls="blogs">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Blog manager</span>
+        </a>
+        <div id="blogs"
+             th:classappend="${#httpServletRequest.requestURI.contains('/dashboard/blogs') or #httpServletRequest.requestURI.equals('/dashboard/my-blogs')} ? 'show' : ''"
+             class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item"
+                   sec:authorize="hasRole('ADMIN')"
+                   th:classappend="${#httpServletRequest.requestURI.equals('/dashboard/blogs')} ? 'active' : ''"
+                   th:href="@{/dashboard/blogs}"><span><i class="bi bi-list-task"></i></span>&nbsp;&nbsp;All blogs
+                </a>
+                <a class="collapse-item"
+                   sec:authorize="hasAnyRole('ADMIN','EDITOR')"
+                   th:classappend="${#httpServletRequest.requestURI.equals('/dashboard/my-blogs') or #httpServletRequest.requestURI.contains('/dashboard/blogs/detail/')} ? 'active' : ''"
+                   th:href="@{/dashboard/my-blogs}"><span><i class="bi bi-book-fill"></i></span>&nbsp;&nbsp;My blog
+                </a>
+                <a class="collapse-item"
+                   sec:authorize="hasAnyRole('ADMIN','EDITOR')"
+                   th:classappend="${#httpServletRequest.requestURI.equals('/dashboard/blogs/create-blog')} ? 'active' : ''"
+                   th:href="@{/dashboard/blogs/create-blog}"><span><i class="bi bi-plus-square-fill"></i></span>&nbsp;&nbsp;Create blog
+                </a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider" sec:authorize="hasAnyRole('ADMIN','EDITOR')">
+
+    <!-- Heading -->
+    <div class="sidebar-heading" sec:authorize="hasRole('ADMIN')">
+        Categories
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+           aria-expanded="true" aria-controls="collapseTwo">
+            <i class="bi bi-table"></i>
+            <span>Category manager</span>
+        </a>
+        <div id="collapseTwo" th:classappend="${#httpServletRequest.requestURI == '/dashboard/categories' or #httpServletRequest.requestURI == '/dashboard/admin/category/create'} ? 'show' : ''"
+             class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item"
+                   sec:authorize="hasRole('ADMIN')"
+                   th:classappend="${#httpServletRequest.requestURI == '/dashboard/categories'} ? 'active' : ''"
+                   th:href="@{/dashboard/categories}"><span><i class="bi bi-bookmarks-fill"></i></span>&nbsp;&nbsp;All categories
+                </a>
+                <a class="collapse-item"
+                   sec:authorize="hasRole('ADMIN')"
+                   th:classappend="${#httpServletRequest.requestURI == '/dashboard/admin/category/create'} ? 'active' : ''"
+                   th:href="@{/dashboard/admin/category/create}"><span><i class="bi bi-bookmark-plus-fill"></i></span>&nbsp;&nbsp;Create category
+                </a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider" sec:authorize="hasRole('ADMIN')">
+
+    <!-- Heading -->
+    <div class="sidebar-heading" sec:authorize="hasRole('MEMBER')">
+        Users
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item" sec:authorize="hasRole('MEMBER')">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+           aria-expanded="true" aria-controls="collapsePages">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>User Manager</span>
+        </a>
+        <div id="collapsePages"
+             th:classappend="${#httpServletRequest.requestURI == '/dashboard/admin/users' or #httpServletRequest.requestURI == '/dashboard/admin/create-user' or #httpServletRequest.requestURI == '/dashboard/user/profile'} ? 'show' : ''"
+             class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item"
+                   sec:authorize="hasRole('ADMIN')"
+                   th:classappend="${#httpServletRequest.requestURI == '/dashboard/admin/users'} ? 'active' : ''"
+                   th:href="@{/dashboard/admin/users}"><span><i class="bi bi-people-fill"></i></span>&nbsp;&nbsp;All user
+                </a>
+                <a class="collapse-item"
+                   sec:authorize="hasRole('ADMIN')"
+                   th:classappend="${#httpServletRequest.requestURI == '/dashboard/admin/create-user'} ? 'active' : ''"
+                   th:href="@{/dashboard/admin/create-user}"><span><i class="bi bi-person-plus-fill"></i></span> &nbsp;&nbsp;Create user
+                </a>
+                <a class="collapse-item"
+                   sec:authorize="hasRole('MEMBER')"
+                   th:classappend="${#httpServletRequest.requestURI == '/dashboard/user/profile'} ? 'active' : ''"
+                   th:href="@{/dashboard/user/profile}"><span><i class="bi bi-person-circle"></i></span>&nbsp;&nbsp; Profile
+                </a>
+
+            </div>
+        </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+
+</ul>
+<!-- End of Sidebar -->
+
+    </body>
+</html>

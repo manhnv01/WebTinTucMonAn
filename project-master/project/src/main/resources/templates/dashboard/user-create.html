@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layouts/dashboard-layout :: main-fragment(~{:: title}, ~{:: #css}, ~{:: #main}, ~{:: #js})}">
+
+<head>
+    <title>FoodeiBlog Admin | Create User</title>
+    <th:block id="css">
+        <link rel="stylesheet" th:href="@{/admin/css/profile.css}">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    </th:block>
+</head>
+
+<body id="page-top">
+              <th:block id="main">
+                  <!-- Begin Page Content -->
+                  <div class="container-fluid">
+
+                      <!-- Page Heading -->
+                      <h1 class="h3 mb-4 text-gray-800">Profile</h1>
+
+                      <div class="container emp-profile">
+                          <form method="post" th:object="${updateUserRequest}" th:action="@{/dashboard/admin/create-user}" enctype="multipart/form-data">
+                              <div class="row">
+                                  <div class="col-md-4">
+
+                                  </div>
+                                  <div class="col-md-6">
+                                      <div class="profile-head">
+                                          <h5>Create New User</h5>
+                                          <input type="hidden" th:field="*{id}">
+                                          <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                              <li class="nav-item">
+                                                  <a
+                                                          class="nav-link active"
+                                                          id="home-tab"
+                                                          data-toggle="tab"
+                                                          href="#home"
+                                                          role="tab"
+                                                          aria-controls="home"
+                                                          aria-selected="true"
+                                                  >Information</a
+                                                  >
+                                              </li>
+<!--                                              <li class="nav-item">-->
+<!--                                                  <a-->
+<!--                                                          class="nav-link"-->
+<!--                                                          id="profile-tab"-->
+<!--                                                          data-toggle="tab"-->
+<!--                                                          href="#profile"-->
+<!--                                                          role="tab"-->
+<!--                                                          aria-controls="profile"-->
+<!--                                                          aria-selected="false"-->
+<!--                                                  >Timeline</a-->
+<!--                                                  >-->
+<!--                                              </li>-->
+                                          </ul>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-2">
+                                      <button type="submit"
+                                              class="profile-edit-btn"
+                                              id ="save">Save</button>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-4">
+<!--                                      <div class="profile-work">-->
+<!--                                          <p>WORK LINK</p>-->
+<!--                                          <a href="">Website Link</a><br />-->
+<!--                                          <a href="">Bootsnipp Profile</a><br />-->
+<!--                                          <a href="">Bootply Profile</a>-->
+<!--                                          <p>SKILLS</p>-->
+<!--                                          <a href="">Web Designer</a><br />-->
+<!--                                          <a href="">Web Developer</a><br />-->
+<!--                                          <a href="">WordPress</a><br />-->
+<!--                                          <a href="">WooCommerce</a><br />-->
+<!--                                          <a href="">PHP, .Net</a><br />-->
+<!--                                      </div>-->
+                                  </div>
+                                  <div class="col-md-8">
+                                      <div class="tab-content profile-tab form-group" id="myTabContent">
+                                          <div
+                                                  class="tab-pane fade show active"
+                                                  id="home"
+                                                  role="tabpanel"
+                                                  aria-labelledby="home-tab"
+                                          >
+                                              <div class="row">
+                                                  <div class="col-md-3">
+                                                      <label for="name">Name</label>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <input id="name" class="form-control" type="text" th:field="*{name}">
+                                                  </div>
+                                              </div>
+                                              <div class="row">
+                                                  <div class="col-md-3">
+                                                      <label for="email">Email</label>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <input class="form-control" id="email" type="text" name="email" th:field="*{email}" >
+                                                      <p th:if="${emailExisted}" th:text="${emailExisted}" style="color: red"></p>
+                                                  </div>
+                                              </div>
+                                              <div class="row">
+                                                  <div class="col-md-3">
+                                                      <label for="phone">Phone</label>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <input class="form-control" id="phone" type="number" name="phone" th:field="*{phone}">
+                                                  </div>
+                                              </div>
+                                              <div class="row">
+                                                  <div class="col-md-3">
+                                                      <label for="user-role">Role</label>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <select th:field="*{role}"
+                                                              class="form-control select2" multiple="multiple" id="user-role">
+                                                          <option value="MEMBER">MEMBER</option>
+                                                          <option value="EDITOR">EDITOR</option>
+                                                          <option value="ADMIN">ADMIN</option>
+                                                      </select>
+                                                  </div>
+                                              </div>
+                                              <div class="row">
+                                                  <div class="col-md-3">
+                                                      <label for="password">New Password</label>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <input class="form-control" type="password" name="password" id="password" th:field="*{password}">
+                                                  </div>
+                                              </div>
+                                              <div class="row">
+                                                  <div class="col-md-3">
+                                                      <label for="confirm_password">Confirm Password</label>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <input class="form-control" type="password" id="confirm_password" th:field="*{confirmPassword}">
+                                                      <div><span id="message"></span></div>
+                                                      <p th:text="${checkPass}" style="color: red;"></p>
+                                                  </div>
+                                              </div>
+                                          </div>
+
+                                      </div>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+
+                  </div>
+                  <!-- /.container-fluid -->
+
+              </th:block>
+
+              <th:block id="js">
+
+                  <!--        select 2-->
+                  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+                  <script th:inline="javascript">
+
+                      const role = $("#user-role");
+                      role.select2();
+
+                      console.log("hello");
+
+                      $('#password, #confirm_password').on('keyup', function () {
+                          if ($('#password').val() === $('#confirm_password').val()) {
+                              $('#message').html('Matching').css('color', 'green');
+                          } else
+                              $('#message').html('Not Matching').css('color', 'red');
+                      });
+
+
+                  </script>
+              </th:block>
+
+</body>
+
+</html>

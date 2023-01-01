@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{layouts/dashboard-layout :: main-fragment(~{:: title}, ~{:: #css}, ~{:: #main}, ~{:: #js})}">
+
+<head>
+    <title>Foodei Blog - 401</title>
+</head>
+
+<body id="page-top">
+
+    <th:block id="main">
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+            <!-- 404 Error Text -->
+            <div class="text-center">
+                <div class="error mx-auto" data-text="401">401</div>
+                <p class="lead text-gray-800 mb-5">Unauthorized</p>
+                <p class="text-gray-500 mb-0">Oops! You are not log in yet...</p>
+                <a th:href="@{/}">&larr; Back to Home Page</a>
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+    </th:block>
+
+
+</body>
+
+</html>

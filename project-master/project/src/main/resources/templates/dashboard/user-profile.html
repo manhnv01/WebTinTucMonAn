@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layouts/dashboard-layout :: main-fragment(~{:: title}, ~{:: #css}, ~{:: #main}, ~{:: #js})}">
+
+<head>
+    <title>FoodeiBlog Admin | Profile</title>
+    <th:block id="css">
+        <link rel="stylesheet" th:href="@{/admin/css/profile.css}">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <style th:inline="css">
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button
+            {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+        </style>
+    </th:block>
+</head>
+
+<body id="page-top">
+              <th:block id="main">
+                  <!-- Begin Page Content -->
+                  <div class="container-fluid">
+
+                      <!-- Page Heading -->
+                      <h1 class="h3 mb-4 text-gray-800">Profile</h1>
+
+                      <div class="container emp-profile">
+                          <form method="post" th:object="${updateUserRequest}" th:action="@{/dashboard/user/update-user}" enctype="multipart/form-data">
+                              <div class="row" style="height: 350px">
+                                  <div class="col-md-4" >
+                                      <div class="profile-img" >
+                                          <img id="avatar" alt=""
+                                               th:src="${user.avatar} ? ${user.avatar} : '/admin/img/person-icon.png'"/>
+
+                                          <div class="file btn btn-lg btn-primary">
+                                              Change Photo
+                                              <input accept="image/jpeg, image/png" th:field="*{image}" type="file" name="image" id="image">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-8">
+                                      <div class="row">
+                                          <div class="col-md-9">
+                                              <div class="profile-head">
+                                                  <h5 th:text="${user.name}"></h5>
+                                                  <input type="hidden" th:field="*{id}">
+                                                  <input th:field="*{enabled}" type="hidden">
+                                                  <p class="profile-rating">Blog : <span th:text="${blogs.size()}"></span> articles</p>
+                                                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                      <li class="nav-item">
+                                                          <a
+                                                                  class="nav-link active"
+                                                                  id="home-tab"
+                                                                  data-toggle="tab"
+                                                                  href="#home"
+                                                                  role="tab"
+                                                                  aria-controls="home"
+                                                                  aria-selected="true"
+                                                          >About</a
+                                                          >
+                                                      </li>
+                                                      <li class="nav-item">
+                                                          <a
+                                                                  class="nav-link"
+                                                                  id="profile-tab"
+                                                                  data-toggle="tab"
+                                                                  href="#profile"
+                                                                  role="tab"
+                                                                  aria-controls="profile"
+                                                                  aria-selected="false"
+                                                          >Timeline</a
+                                                          >
+                                                      </li>
+                                                  </ul>
+                                              </div>
+                                          </div>
+                                          <div class="col-md-3">
+                                              <button type="submit"
+                                                      class="profile-edit-btn"
+                                                      id ="save">Save</button>
+                                          </div>
+                                      </div>
+                                      <div class="row">
+                                          <div class="col-md-12">
+                                              <div class="tab-content profile-tab form-group" id="myTabContent">
+                                                  <div
+                                                          class="tab-pane fade show active"
+                                                          id="home"
+                                                          role="tabpanel"
+                                                          aria-labelledby="home-tab"
+                                                  >
+                                                      <div class="row">
+                                                          <div class="col-md-3">
+                                                              <label for="name">Name</label>
+                                                          </div>
+                                                          <div class="col-md-6">
+                                                              <input id="name" class="form-control" type="text" th:field="*{name}" th:value="${user.name}">
+                                                          </div>
+                                                      </div>
+                                                      <div class="row">
+                                                          <div class="col-md-3">
+                                                              <label for="email">Email</label>
+                                                          </div>
+                                                          <div class="col-md-6">
+                                                              <input class="form-control" id="email" type="text" readonly name="email" th:field="*{email}" th:value="${user.email}">
+                                                          </div>
+                                                      </div>
+                                                      <div class="row">
+                                                          <div class="col-md-3">
+                                                              <label for="phone">Phone</label>
+                                                          </div>
+                                                          <div class="col-md-6">
+                                                              <input class="form-control" id="phone"
+                                                                     type="number" name="phone" th:field="*{phone}" th:value="${user.phone}">
+                                                          </div>
+                                                      </div>
+                                                      <div class="row">
+                                                          <div class="col-md-3">
+                                                              <label for="user-role">Role</label>
+                                                          </div>
+                                                          <div class="col-md-6">
+                                                              <select sec:authorize="hasRole('ADMIN')" th:field="*{role}"
+                                                                      class="form-control select2" multiple="multiple" id="user-role">
+                                                                  <option value="MEMBER">MEMBER</option>
+                                                                  <option value="EDITOR">EDITOR</option>
+                                                                  <option value="ADMIN">ADMIN</option>
+                                                              </select>
+                                                              <input sec:authorize="!hasRole('ADMIN')" class="form-control" type="text" readonly name="" th:value="${showRole}">
+                                                              <input type="hidden" th:field="*{role}">
+                                                          </div>
+                                                      </div>
+                                                      <div class="row">
+                                                          <div class="col-md-3">
+                                                              <label for="password">New Password</label>
+                                                          </div>
+                                                          <div class="col-md-6">
+                                                              <input class="form-control" type="password" name="password" id="password" th:field="*{password}">
+                                                          </div>
+                                                      </div>
+                                                      <div class="row">
+                                                          <div class="col-md-3">
+                                                              <label for="confirm_password">Confirm Password</label>
+                                                          </div>
+                                                          <div class="col-md-6">
+                                                              <input class="form-control" type="password" id="confirm_password">
+                                                              <div><span id="message"></span></div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div class="tab-pane fade"
+                                                       id="profile"
+                                                       role="tabpanel"
+                                                       aria-labelledby="profile-tab">
+                                                      <div class="row">
+                                                          <div class="col-md-6">
+                                                              <label>Experience</label>
+                                                          </div>
+                                                          <div class="col-md-6">
+                                                              <p>Expert</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="row">
+                                                          <div class="col-md-6">
+                                                              <label>Hourly Rate</label>
+                                                          </div>
+                                                          <div class="col-md-6">
+                                                              <p>10$/hr</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="row">
+                                                          <div class="col-md-6">
+                                                              <label>Total Projects</label>
+                                                          </div>
+                                                          <div class="col-md-6">
+                                                              <p>230</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="row">
+                                                          <div class="col-md-6">
+                                                              <label>English Level</label>
+                                                          </div>
+                                                          <div class="col-md-6">
+                                                              <p>Expert</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="row">
+                                                          <div class="col-md-6">
+                                                              <label>Availability</label>
+                                                          </div>
+                                                          <div class="col-md-6">
+                                                              <p>6 months</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="row">
+                                                          <div class="col-md-12">
+                                                              <label>Your Bio</label><br />
+                                                              <p>Your detail description</p>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+
+                  </div>
+                  <!-- /.container-fluid -->
+
+              </th:block>
+
+              <th:block id="js">
+
+                  <!--        select 2-->
+                  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+                  <script th:inline="javascript">
+
+                      const role = $("#user-role");
+                      role.select2();
+
+                      console.log("hello");
+
+                      var reader = new FileReader();
+                      reader.onload = function(r_event) {
+                          document.getElementById('avatar').setAttribute('src', r_event.target.result);
+                      };
+
+                      document.getElementsByName('image')[0].addEventListener('change', function(event) {
+                          reader.readAsDataURL(this.files[0]);
+                      });
+
+                      $('#password, #confirm_password').on('keyup', function () {
+                          if ($('#password').val() === $('#confirm_password').val()) {
+                              $('#message').html('Matching').css('color', 'green');
+                          } else
+                              $('#message').html('Not Matching').css('color', 'red');
+                      });
+
+
+                  </script>
+              </th:block>
+
+</body>
+
+</html>

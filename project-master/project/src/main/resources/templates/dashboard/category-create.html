@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{layouts/dashboard-layout :: main-fragment(~{:: title}, ~{:: #css}, ~{:: #main}, ~{:: #js})}">
+
+<head>
+    <title>FoodeiBlog Admin | Create Category</title>
+    <th:block id="css">
+        <!--    Select 2-->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+    </th:block>
+</head>
+
+<body id="page-top">
+
+        <!-- Begin Page Content -->
+        <!-- /.container-fluid -->
+
+
+            <section class="content" id="main">
+                <div class="container-fluid">
+                    <form th:action="@{/dashboard/admin/category/create}" th:object="${categoryRequest}" method="post" enctype="multipart/form-data">
+                        <div class="row py-2">
+                            <div class="col-6">
+                                <a th:href="@{/dashboard/categories}" class="btn btn-default">
+                                    <i class="fas fa-chevron-left"></i> Back
+                                </a>
+                                <button type="submit" class="btn btn-info px-4" id="btn-save">
+                                    Save
+                                </button>
+                            </div>
+
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label for="category-name">Category Name</label>
+                                                    <input type="text" class="form-control" id="category-name"
+                                                           required
+                                                           th:field="*{name}"/>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+
+                                                <div class="form-group">
+                                                    <div class="thumbnail-preview-container mb-3">
+                                                        <img id="thumbnail" />
+                                                    </div>
+                                                    <label for="blog-logo-input" class="btn btn-warning">Choose image</label>
+                                                    <input accept="image/jpeg, image/png" th:field="*{image}" type="file" id="blog-logo-input" class="d-none" name="image">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+
+
+
+    <th:block id="js">
+        <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+
+        <!--        select 2-->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+        <script th:inline="javascript">
+            // Initialize editor
+
+            var reader = new FileReader();
+            reader.onload = function(r_event) {
+                document.getElementById('thumbnail').setAttribute('src', r_event.target.result);
+            }
+
+            document.getElementsByName('image')[0].addEventListener('change', function(event) {
+                reader.readAsDataURL(this.files[0]);
+            });
+
+        </script>
+    </th:block>
+
+</body>
+
+</html>

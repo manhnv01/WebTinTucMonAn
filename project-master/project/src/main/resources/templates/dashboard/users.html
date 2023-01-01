@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{layouts/dashboard-layout :: main-fragment(~{:: title}, ~{:: #css}, ~{:: #main}, ~{:: #js})}">
+
+    <head>
+        <title>FoodeiBlog Admin | Users</title>
+        <th:block id="css">
+            <!-- Custom styles for this page -->
+            <link th:href="@{/admin/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
+<!--            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">-->
+
+        </th:block>
+    </head>
+
+    <body id="page-top">
+        <th:block id="main">
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Users</h6>
+                </div>
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6"></div>
+                                <div class="col-sm-12 col-md-6">
+                                    <form th:action="@{/dashboard/admin/users}" method="get">
+                                        <div id="dataTable_filter" class="dataTables_filter">
+                                            <label>Search:
+                                                <input type="search" class="form-control form-control-sm" name="keyword"
+                                                       th:placeholder="${keyword.isEmpty()} ? 'Name or Email' : ${keyword}"
+                                                       aria-controls="dataTable">
+                                            </label>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div th:if="${#lists.isEmpty(userList)}">
+                                <p>Search not found.</p>
+                            </div>
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" th:unless="${#lists.isEmpty(userList)}">
+                                <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>User name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Role</th>
+                                    <th>State</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>User name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Role</th>
+                                    <th>State</th>
+                                    <th>Action</th>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                <tr th:each="user,iStat : ${userList}">
+                                    <td th:text="${iStat.index + 1}"></td>
+                                    <td th:text="${user.name}"></td>
+                                    <td th:text="${user.email}"></td>
+                                    <td th:text="${user.phone}"></td>
+                                    <td>
+                                        <a th:classappend="${user.role.contains('MEMBER')} ? 'disabled' : ''"
+                                           class="btn btn-circle btn-member">
+                                            <i class="bi bi-person"></i></a>
+
+                                        <a th:unless="${user.role.contains('EDITOR')}"
+                                           th:href="@{/dashboard/admin/set-role/{id}/{role} (id = ${user.id}, role = 'EDITOR')}"
+                                           class="btn btn-circle btn-editor">
+                                            <i class="bi bi-vector-pen"></i></a>
+
+                                        <a th:if="${user.role.contains('EDITOR')}"
+                                           th:href="@{/dashboard/admin/remove-role/{id}/{role} (id = ${user.id}, role = 'EDITOR')}"
+                                           class="btn btn-circle btn-remove-editor">
+                                            <i class="bi bi-vector-pen"></i></a>
+
+                                        <a th:unless="${user.role.contains('ADMIN')}"
+                                           th:href="@{/dashboard/admin/set-role/{id}/{role} (id = ${user.id}, role = 'ADMIN')}"
+                                           class="btn btn-circle btn-admin">
+                                            <i class="bi bi-robot"></i></i></a>
+
+                                        <a th:if="${user.role.contains('ADMIN')}"
+                                           th:href="@{/dashboard/admin/remove-role/{id}/{role} (id = ${user.id}, role = 'ADMIN')}"
+                                           class="btn btn-circle btn-remove-admin">
+                                            <i class="bi bi-robot"></i></i></a>
+
+                                    </td>
+                                    <td th:switch="${user.enabled}">
+                                        <span th:case="true">Active</span>
+                                        <span th:case="false">Disabled</span>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/dashboard/admin/user-active/{id} (id = ${user.id})}"
+                                           th:classappend="${user.enabled == true} ? 'disabled' : ''"
+                                           onclick="return confirm('Are you sure to active this user?')"
+                                           class="btn btn-success btn-circle">
+                                            <i class="fas fa-check"></i>
+                                        </a>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a th:href="@{/dashboard/admin/user-disable/{id} (id = ${user.id})}"
+                                           onclick="return confirm('Are you sure to disable this user?')"
+                                           th:classappend="${user.enabled == false} ? 'disabled' : ''"
+                                           class="btn btn-warning btn-circle">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate" th:unless="${#lists.isEmpty(userList)}">
+                                <ul class="pagination">
+                                    <li class="paginate_button page-item previous"  th:if="${keyword.isEmpty()}" th:classappend="${currentPage == 1} ? 'disabled' : ''">
+                                        <a th:if="${currentPage > 1}"
+                                           th:href="@{'/dashboard/admin/users' + '?page=' + ${currentPage - 1}}"
+                                           aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                        <span  th:unless="${currentPage > 1}" class="page-link">Previous</span>
+                                    </li>
+                                    <li class="paginate_button page-item previous"  th:unless="${keyword.isEmpty()}" th:classappend="${currentPage == 1} ? 'disabled' : ''">
+                                        <a th:if="${currentPage > 1}"
+                                           th:href="@{'/dashboard/admin/users' + '?page=' + ${currentPage - 1}}"
+                                           aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                        <span  th:unless="${currentPage > 1}" class="page-link">Previous</span>
+                                    </li>
+                                    <li class="paginate_button page-item"
+                                        th:if="${keyword.isEmpty()}"
+                                        th:each="i: ${#numbers.sequence(1, totalPages)}"
+                                        th:classappend="${i == currentPage} ? 'active' : ''">
+                                        <a aria-controls="dataTable" data-dt-idx="1" tabindex="0" class="page-link"
+                                           th:if="${i != currentPage}"
+                                           th:href="@{'/dashboard/admin/users?page=' + ${i}}">[[${i}]]</a>
+                                        <span th:unless="${i != currentPage}" class="page-link">[[${i}]]</span>
+                                    </li>
+                                    <li class="paginate_button page-item"
+                                        th:unless="${keyword.isEmpty()}"
+                                        th:each="i: ${#numbers.sequence(1, totalPages)}"
+                                        th:classappend="${i == currentPage} ? 'active' : ''">
+                                        <a aria-controls="dataTable" data-dt-idx="1" tabindex="0" class="page-link"
+                                           th:if="${i != currentPage}"
+                                           th:href="@{'/dashboard/admin/users?page=' + ${i} +'&keyword=' + ${keyword}}">[[${i}]]</a>
+                                        <span th:unless="${i != currentPage}" class="page-link">[[${i}]]</span>
+                                    </li>
+                                    <li class="paginate_button page-item next" th:if="${keyword.isEmpty()}" th:classappend="${currentPage == totalPages} ? 'disabled' : ''">
+                                        <a aria-controls="dataTable" data-dt-idx="7" tabindex="0" class="page-link"
+                                           th:if="${currentPage < totalPages}"
+                                           th:href="@{'/dashboard/admin/users' + '?page=' + ${currentPage + 1}}">Next</a>
+                                        <span th:unless="${currentPage < totalPages}" class="page-link">Next</span>
+                                    </li>
+                                    <li class="paginate_button page-item next" th:unless="${keyword.isEmpty()}" th:classappend="${currentPage == totalPages} ? 'disabled' : ''">
+                                        <a aria-controls="dataTable" data-dt-idx="7" tabindex="0" class="page-link"
+                                           th:if="${currentPage < totalPages}"
+                                           th:href="@{'/dashboard/admin/users?page=' + ${currentPage + 1} +'&keyword=' + ${keyword}}">Next</a>
+                                        <span th:unless="${currentPage < totalPages}" class="page-link">Next</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </th:block>
+
+    <th:block id="js">
+<!--        <script th:inline="javascript">-->
+<!--            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"-->
+<!--                    integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"-->
+<!--                    crossOrigin="anonymous"></script>-->
+<!--        </script>-->
+    </th:block>
+    </body>
+
+</html>
